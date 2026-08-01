@@ -23,31 +23,32 @@
             <div class="confirm__heading">
                 <h2>お問い合わせ内容確認</h2>
             </div>
-            <form class="form">
+            <form class="form" method="POST" action="{{ route('contact.thanks') }}">
+                @csrf
                 <div class="confirm-table">
                     <table class="confirm-table__inner">
                         <tr class="confirm-table__row">
                             <th class="confirm-table__header">お名前</th>
                             <td class="confirm-table__text">
-                                <input type="text" name="name" value="サンプルテキスト" />
+                                <input type="text" name="name" value="{{ $post->name }}" />
                             </td>
                         </tr>
                         <tr class="confirm-table__row">
                             <th class="confirm-table__header">メールアドレス</th>
                             <td class="confirm-table__text">
-                                <input type="email" name="email" value="サンプルテキスト" />
+                                <input type="email" name="email" value="{{ $post->email }}" />
                             </td>
                         </tr>
                         <tr class="confirm-table__row">
                             <th class="confirm-table__header">電話番号</th>
                             <td class="confirm-table__text">
-                                <input type="tel" name="tel" value="サンプルテキスト" />
+                                <input type="tel" name="tel" value="{{ $post->tel }}" />
                             </td>
                         </tr>
                         <tr class="confirm-table__row">
                             <th class="confirm-table__header">お問い合わせ内容</th>
                             <td class="confirm-table__text">
-                                <input type="text" name="content" value="サンプルテキスト" />
+                                <input type="text" name="content" value="{{ $post->content }}" />
                             </td>
                         </tr>
                     </table>
