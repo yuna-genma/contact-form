@@ -1,66 +1,138 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# contact-form
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 概要
 
-## About Laravel
+旧教材のLaravel演習講座の『お問い合わせフォーム』を、新教材のLaravel Sailの環境で作成しました。
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 作成の流れ
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 1. 要件定義
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+＊基本情報
 
-## Learning Laravel
+- アプリ名：お問い合わせフォーム
+- 利用者：個人ユーザー（ログインはあってもなくても）
+- 目的：ユーザーがお問い合わせ内容を送信する
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+＊フォームの内容について
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- 名前：必須
+- メールアドレス：必須
+- 電話番号：必須
+- お問い合わせ内容：空欄可（長文OK）
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 2. 整理
 
-## Laravel Sponsors
+＊フォームのCRUD
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- 名前・メールアドレス・電話番号の入力フォームの表示 '/' ContactController＠index　GET
+- 入力内容確認画面 '/' ContactController@store　POST
+- 完了ページの表示 '/contacts' ContactController@thanks　POST
 
-### Premium Partners
+### 3. バリデーション・テスト要件書き出し
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+＊バリデーション
 
-## Contributing
+- name required, string, max:255
+- email required, email, max:255
+- tell required, string, min:10, max:11
+- content nullable,string
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+＊テスト要件
 
-## Code of Conduct
+1. 入力フォームを表示できる
+2. お問い合わせを作成できる　確認画面の表示
+3. 完了画面を表示できる
+4. 名前はが空だとバリデーションエラーになる
+5. メールアドレスが空だとバリデーションエラーになる
+6. 電話番号が空だとバリデーションエラーになる
+7. 名前は255文字まで入力できる
+8. 名前が256文字以上だとバリデーションエラーになる
+9. メールアドレスは255文字まで入力できる
+10. メールアドレスが256文字以上だとバリデーションエラーになる
+11. 電話番号は10文字以上で入力できる
+12. 電話番号は11文字以内で入力できる
+13. 電話番号が9文字以下だとバリデーションエラーになる
+14. 電話番号が12文字以上だとバリデーションエラーになる
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 4. 環境構築
 
-## Security Vulnerabilities
+#### 1. Laravelプロジェクトの作成
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Dockerが起動していることを確認
 
-## License
+```bash
+# ホームディレクトリに移動
+cd ~
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# Laravelプロジェクトを作成
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    -e COMPOSER_CACHE_DIR=/tmp/composer_cache \
+    laravelsail/php82-composer:latest \
+    composer create-project laravel/laravel:^10.0 contact-form
+```
+
+#### 2. Laravel Sailのインストール
+
+```bash
+# プロジェクトディレクトリに移動
+cd contact-form
+
+# Laravel Sailをインストール
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    -e COMPOSER_CACHE_DIR=/tmp/composer_cache \
+    laravelsail/php82-composer:latest \
+    composer require laravel/sail --dev
+
+# Sailの設定ファイルをパブリッシュ（MySQLを選択）
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    -e COMPOSER_CACHE_DIR=/tmp/composer_cache \
+    laravelsail/php82-composer:latest \
+    php artisan sail:install --with=mysql
+```
+
+#### 3. phpMyAdminの追加
+
+`compose.yaml`を開き、`mysql`サービスの後に以下の設定を追加して保存する
+
+```php
+    phpmyadmin:
+        image: 'phpmyadmin:latest'
+        ports:
+            - '${FORWARD_PHPMYADMIN_PORT:-8080}:80'
+        environment:
+            PMA_HOST: mysql
+            PMA_USER: '${DB_USERNAME}'
+            PMA_PASSWORD: '${DB_PASSWORD}'
+        networks:
+            - sail
+        depends_on:
+            - mysql
+```
+
+#### 4. フロントエンドのセットアップ
+
+#### 5. Sailの起動とエイリアス設定
+
+#### 6. 動作確認
+
+### 5. 提供アセットの配置
+
+### 6. Git/GitHub準備とIssue登録
+
+### 7. マイグレーションの作成
+
+### 8. モデル作成
+
+### 9. CRUD機能の実装
+
+### 10. テスト
